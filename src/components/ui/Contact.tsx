@@ -12,26 +12,10 @@ import { serviceOptions } from '@/lib/data';
 import { slideRight, slideLeft, staggerContainer, staggerItem } from '@/lib/animations';
 
 const contactInfo = [
-  {
-    icon: Phone,
-    label: 'Phone',
-    value: '+91 98765 43210',
-  },
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'hello@gkprinters.com',
-  },
-  {
-    icon: MapPin,
-    label: 'Address',
-    value: '123 Print Street, Design District, City - 456789',
-  },
-  {
-    icon: Clock,
-    label: 'Business Hours',
-    value: 'Mon – Sat: 9:00 AM – 7:00 PM',
-  },
+  { icon: Phone, label: 'Phone', value: '+91 98765 43210' },
+  { icon: Mail, label: 'Email', value: 'hello@gkprinters.com' },
+  { icon: MapPin, label: 'Address', value: '123 Print Street, Design District, City - 456789' },
+  { icon: Clock, label: 'Business Hours', value: 'Mon – Sat: 9:00 AM – 7:00 PM' },
 ];
 
 type Errors = {
@@ -42,8 +26,97 @@ type Errors = {
   message?: string;
 };
 
+type FormData = {
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  message: string;
+};
+
+function FloatingField({
+  id,
+  label,
+  type = 'text',
+  value,
+  onChange,
+  error,
+  placeholder,
+  isTextarea,
+  isSelect,
+  options,
+}: {
+  id: string;
+  label: string;
+  type?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  error?: string;
+  placeholder?: string;
+  isTextarea?: boolean;
+  isSelect?: boolean;
+  options?: string[];
+}) {
+  const hasValue = value.length > 0;
+  const baseClass = `peer w-full rounded-xl border bg-white px-4 pt-6 pb-2 text-sm text-ink-900 placeholder:text-transparent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent-500/20 ${
+    error ? 'border-red-400' : 'border-ink-200 focus:border-accent-500'
+  }`;
+
+  return (
+    <div className="relative">
+      {isTextarea ? (
+        <textarea
+          id={id}
+          name={id}
+          rows={4}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`${baseClass} resize-none`}
+        />
+      ) : isSelect ? (
+        <select
+          id={id}
+          name={id}
+          value={value}
+          onChange={onChange}
+          className={`${baseClass} appearance-none cursor-pointer ${hasValue ? '' : 'text-transparent'}`}
+        >
+          <option value="">Select a service</option>
+          {options?.map((opt) => (
+            <option key={opt} value={opt} className="text-ink-900">
+              {opt}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          id={id}
+          name={id}
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={baseClass}
+        />
+      )}
+      <label
+        htmlFor={id}
+        className={`pointer-events-none absolute left-4 transition-all duration-200 ${
+          hasValue || isSelect
+            ? 'top-2 text-[0.7rem] font-semibold uppercase tracking-wider text-accent-500'
+            : 'top-4 text-sm text-ink-400'
+        } peer-focus:top-2 peer-focus:text-[0.7rem] peer-focus:font-semibold peer-focus:uppercase peer-focus:tracking-wider peer-focus:text-accent-500`}
+      >
+        {label}
+      </label>
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+    </div>
+  );
+}
+
 export default function Contact() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormData>({
     name: '',
     email: '',
     phone: '',
@@ -91,15 +164,10 @@ export default function Contact() {
     }
   };
 
-  const inputClass = (field: keyof Errors) =>
-    `w-full rounded-xl border bg-white px-4 py-3 text-sm text-ink-900 placeholder:text-ink-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent-500/30 ${
-      errors[field] ? 'border-red-400' : 'border-ink-200 focus:border-accent-500'
-    }`;
-
   return (
-    <section id="contact" className="relative py-24 lg:py-32">
+    <section id="contact" className="relative py-24 lg:py-36 bg-gradient-to-b from-[#faf9f7] to-[#f5f3ef]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20">
           {/* Left — info */}
           <motion.div
             variants={slideRight}
@@ -107,13 +175,13 @@ export default function Contact() {
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
           >
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-accent-500 mb-4">
+            <span className="inline-block text-sm font-semibold tracking-[0.2em] uppercase text-accent-500 mb-5">
               Get In Touch
             </span>
-            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-ink-900 text-balance">
+            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-[-0.02em] text-ink-900 text-balance">
               Let's Create Something Great.
             </h2>
-            <p className="mt-5 text-lg text-ink-500 max-w-md">
+            <p className="mt-6 text-lg text-ink-500 max-w-md leading-relaxed">
               Share your print requirements and we'll get back to you with a
               quote and timeline.
             </p>
@@ -123,22 +191,22 @@ export default function Contact() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-40px' }}
-              className="mt-10 flex flex-col gap-4"
+              className="mt-10 flex flex-col gap-px"
             >
               {contactInfo.map((info) => (
                 <motion.div
                   key={info.label}
                   variants={staggerItem}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-ink-100 transition-all duration-300 hover:border-accent-200 hover:shadow-md"
+                  className="group flex items-center gap-5 py-5 border-b border-ink-100 transition-all duration-300"
                 >
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ink-50 text-accent-500">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ink-50 text-accent-500 transition-all duration-300 group-hover:bg-accent-500 group-hover:text-white">
                     <info.icon className="h-5 w-5" />
                   </span>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-ink-400">
+                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-ink-400">
                       {info.label}
                     </p>
-                    <p className="text-sm font-medium text-ink-900 mt-0.5">
+                    <p className="text-base font-medium text-ink-900 mt-0.5">
                       {info.value}
                     </p>
                   </div>
@@ -160,119 +228,60 @@ export default function Contact() {
               noValidate
             >
               <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-semibold text-ink-700 mb-1.5"
-                  >
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="Your full name"
-                    className={inputClass('name')}
-                  />
-                  {errors.name && (
-                    <p className="mt-1 text-xs text-red-500">{errors.name}</p>
-                  )}
-                </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-semibold text-ink-700 mb-1.5"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="you@example.com"
-                    className={inputClass('email')}
-                  />
-                  {errors.email && (
-                    <p className="mt-1 text-xs text-red-500">{errors.email}</p>
-                  )}
-                </div>
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-semibold text-ink-700 mb-1.5"
-                  >
-                    Phone
-                  </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={form.phone}
-                    onChange={handleChange}
-                    placeholder="+91 98765 43210"
-                    className={inputClass('phone')}
-                  />
-                  {errors.phone && (
-                    <p className="mt-1 text-xs text-red-500">{errors.phone}</p>
-                  )}
-                </div>
-                <div>
-                  <label
-                    htmlFor="service"
-                    className="block text-sm font-semibold text-ink-700 mb-1.5"
-                  >
-                    Service
-                  </label>
-                  <select
-                    id="service"
-                    name="service"
-                    value={form.service}
-                    onChange={handleChange}
-                    className={inputClass('service')}
-                  >
-                    <option value="">Select a service</option>
-                    {serviceOptions.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.service && (
-                    <p className="mt-1 text-xs text-red-500">{errors.service}</p>
-                  )}
-                </div>
+                <FloatingField
+                  id="name"
+                  label="Name"
+                  value={form.name}
+                  onChange={handleChange}
+                  error={errors.name}
+                  placeholder="Your full name"
+                />
+                <FloatingField
+                  id="email"
+                  label="Email"
+                  type="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  error={errors.email}
+                  placeholder="you@example.com"
+                />
+                <FloatingField
+                  id="phone"
+                  label="Phone"
+                  type="tel"
+                  value={form.phone}
+                  onChange={handleChange}
+                  error={errors.phone}
+                  placeholder="+91 98765 43210"
+                />
+                <FloatingField
+                  id="service"
+                  label="Service"
+                  value={form.service}
+                  onChange={handleChange}
+                  error={errors.service}
+                  isSelect
+                  options={serviceOptions}
+                />
               </div>
 
               <div className="mt-4">
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-semibold text-ink-700 mb-1.5"
-                >
-                  Message
-                </label>
-                <textarea
+                <FloatingField
                   id="message"
-                  name="message"
-                  rows={4}
+                  label="Message"
                   value={form.message}
                   onChange={handleChange}
+                  error={errors.message}
                   placeholder="Tell us about your print requirements..."
-                  className={`${inputClass('message')} resize-none`}
+                  isTextarea
                 />
-                {errors.message && (
-                  <p className="mt-1 text-xs text-red-500">{errors.message}</p>
-                )}
               </div>
 
               <motion.button
                 type="submit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-full bg-accent-500 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-accent-500/25 transition-colors hover:bg-accent-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2"
+                className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-full bg-accent-500 px-7 py-4 text-base font-semibold text-white shadow-lg shadow-accent-500/25 transition-colors hover:bg-accent-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2"
               >
                 <Send className="h-4 w-4" />
                 Request a Quote
@@ -284,10 +293,9 @@ export default function Contact() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-4 flex items-center gap-2 rounded-xl bg-green-50 border border-green-200 px-4 py-3"
                 >
-                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />
                   <p className="text-sm font-medium text-green-700">
-                    Thank you! Your request has been received. We'll be in touch
-                    shortly.
+                    Thank you! Your request has been received. We'll be in touch shortly.
                   </p>
                 </motion.div>
               )}

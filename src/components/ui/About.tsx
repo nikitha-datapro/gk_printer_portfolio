@@ -6,24 +6,25 @@ const highlights = ['Quality Focus', 'Creative Solutions', 'Reliable Service'];
 
 export default function About() {
   return (
-    <section id="about" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="about" className="relative py-24 lg:py-36 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left — statement */}
+        <div className="grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-24 items-start">
+          {/* Left — large editorial statement */}
           <motion.div
             variants={slideRight}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
+            className="lg:sticky lg:top-32"
           >
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-accent-500 mb-4">
+            <span className="inline-block text-sm font-semibold tracking-[0.2em] uppercase text-accent-500 mb-5">
               About GK Printers
             </span>
-            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-ink-900 text-balance">
+            <h2 className="font-display text-4xl sm:text-5xl lg:text-[3.75rem] xl:text-6xl font-bold leading-[1.05] tracking-[-0.02em] text-ink-900 text-balance">
               Print that makes an{' '}
               <span className="relative inline-block">
                 <span className="relative z-10">impression.</span>
-                <span className="absolute inset-x-0 bottom-1 h-3 bg-accent-500/25 -z-0" />
+                <span className="absolute inset-x-[-2px] bottom-1 h-3 sm:h-4 bg-accent-500/20 -z-0" />
               </span>
             </h2>
           </motion.div>
@@ -35,11 +36,10 @@ export default function About() {
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
           >
-            <p className="text-lg leading-relaxed text-ink-500">
-              GK Printers combines quality materials, modern printing techniques,
-              and attention to detail to create print products that represent
-              your brand beautifully. From the first proof to final delivery,
-              we treat every project with the same care and commitment.
+            <p className="text-xl leading-relaxed text-ink-600 font-light">
+              GK Printers combines quality materials, modern printing
+              techniques, and attention to detail to create print products
+              that represent your brand beautifully.
             </p>
 
             <motion.div
@@ -47,31 +47,31 @@ export default function About() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="mt-8 flex flex-col gap-3"
+              className="mt-10 flex flex-col gap-1"
             >
               {highlights.map((item) => (
                 <motion.div
                   key={item}
                   variants={staggerItem}
-                  className="flex items-center gap-3"
+                  className="group flex items-center gap-4 py-4 border-b border-ink-100"
                 >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent-500/10">
-                    <Check className="h-4 w-4 text-accent-500" />
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-500/10 transition-all duration-300 group-hover:bg-accent-500">
+                    <Check className="h-4 w-4 text-accent-500 transition-colors duration-300 group-hover:text-white" />
                   </span>
-                  <span className="text-base font-medium text-ink-700">
+                  <span className="text-lg font-medium text-ink-800 transition-colors duration-300 group-hover:text-ink-900">
                     {item}
                   </span>
                 </motion.div>
               ))}
             </motion.div>
 
-            {/* Small visual element */}
+            {/* Visual element */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="mt-10 flex items-center gap-4 p-4 rounded-2xl bg-white border border-ink-100 shadow-sm"
+              className="mt-10 flex items-center gap-5 p-5 rounded-2xl bg-gradient-to-br from-white to-ink-50/50 border border-ink-100 shadow-sm"
             >
               <div className="flex -space-x-3">
                 {[
@@ -97,7 +97,7 @@ export default function About() {
                   Diverse print portfolio
                 </p>
                 <p className="text-sm text-ink-400">
-                  Business, marketing, events & packaging
+                  Business, marketing, events &amp; packaging
                 </p>
               </div>
             </motion.div>

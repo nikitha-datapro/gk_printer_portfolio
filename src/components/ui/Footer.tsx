@@ -23,52 +23,50 @@ const socialLinks = [
 export default function Footer() {
   return (
     <footer className="relative bg-ink-950 text-ink-300 overflow-hidden">
-      {/* Decorative top border */}
-      <div className="h-1 bg-gradient-to-r from-transparent via-accent-500 to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-accent-500 to-transparent" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      {/* Oversized background word */}
+      <div className="absolute inset-x-0 bottom-[-2rem] flex justify-center pointer-events-none select-none">
+        <span className="font-display text-[12rem] sm:text-[18rem] lg:text-[26rem] font-bold text-white/[0.025] leading-none tracking-tighter">
+          PRINT
+        </span>
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-10">
+        {/* Large brand name */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-16"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-500">
+              <Printer className="h-5 w-5 text-white" />
+            </span>
+            <span className="font-display text-2xl font-bold text-white">
+              GK Printers
+            </span>
+          </div>
+          <p className="text-lg text-ink-400 max-w-sm">
+            Bringing Your Ideas to Print.
+          </p>
+        </motion.div>
+
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8"
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-8 mb-16"
         >
-          {/* Brand */}
-          <div className="lg:col-span-1">
-            <a
-              href="#home"
-              className="flex items-center gap-2.5 font-display text-xl font-bold text-white mb-4"
-            >
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-500">
-                <Printer className="h-5 w-5" />
-              </span>
-              GK Printers
-            </a>
-            <p className="text-sm leading-relaxed text-ink-400 max-w-xs">
-              Bringing Your Ideas to Print. Professional printing with
-              precision, quality, and care.
-            </p>
-            <div className="mt-5 flex items-center gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-800 text-ink-400 hover:bg-accent-500 hover:text-white transition-all duration-300"
-                >
-                  <social.icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
-          </div>
-
           {/* Navigation */}
           <div>
-            <h4 className="font-display text-sm font-bold uppercase tracking-widest text-white mb-4">
+            <h4 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-white mb-5">
               Navigation
             </h4>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
@@ -84,10 +82,10 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="font-display text-sm font-bold uppercase tracking-widest text-white mb-4">
+            <h4 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-white mb-5">
               Services
             </h4>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-3">
               {services.slice(0, 6).map((service) => (
                 <li key={service.title}>
                   <a
@@ -103,10 +101,10 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-display text-sm font-bold uppercase tracking-widest text-white mb-4">
+            <h4 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-white mb-5">
               Contact
             </h4>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-3.5">
               <li className="flex items-start gap-3">
                 <Phone className="h-4 w-4 mt-0.5 text-accent-500 shrink-0" />
                 <span className="text-sm text-ink-400">+91 98765 43210</span>
@@ -123,10 +121,29 @@ export default function Footer() {
               </li>
             </ul>
           </div>
+
+          {/* Social */}
+          <div>
+            <h4 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-white mb-5">
+              Follow
+            </h4>
+            <div className="flex items-center gap-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  aria-label={social.label}
+                  className="flex h-10 w-10 items-center justify-center rounded-lg bg-ink-800 text-ink-400 hover:bg-accent-500 hover:text-white transition-all duration-300"
+                >
+                  <social.icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
+          </div>
         </motion.div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-ink-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="relative pt-6 border-t border-ink-800 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-ink-500">
             &copy; {new Date().getFullYear()} GK Printers. All rights reserved.
           </p>
